@@ -147,7 +147,7 @@ function shuffleArray(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){con
 function placeRandomTargets(){const letters=['a','ă','â'];const shuffledTargets=shuffleArray(letters);const targets=targetRow.querySelectorAll('.letter-box.target');targets.forEach((t,idx)=>{t.dataset.letter=shuffledTargets[idx];t.querySelector('.letter-content').textContent=shuffledTargets[idx];t.classList.remove('letter-hidden','revealed');});const drags=draggableRow.querySelectorAll('.letter-box.draggable');const shuffledDrags=shuffleArray(letters);drags.forEach((d,idx)=>{d.dataset.letter=shuffledDrags[idx];d.textContent=shuffledDrags[idx];d.style.visibility='visible';d.draggable=true;d.style.transform='';});correctCount=0;}
 
 /* ---------- countdown & play timer ---------- */
-function startInitialCountdown(){clearTimers();placeRandomTargets();let count=10;timerBox.classList.remove('shake');timerBox.textContent=count;playCount(count);initialTimer=setInterval(()=>{count--;if(count>=1){timerBox.textContent=count;playCount(count);}else{clearInterval(initialTimer);timerBox.textContent='Bắt đầu!';safePlay(audio.start);setTimeout(()=>hideTargetsAndStartPlay(),600);}},1000);}
+function startInitialCountdown(){clearTimers();placeRandomTargets();let count=5;timerBox.classList.remove('shake');timerBox.textContent=count;playCount(count);initialTimer=setInterval(()=>{count--;if(count>=1){timerBox.textContent=count;playCount(count);}else{clearInterval(initialTimer);timerBox.textContent='Bắt đầu!';safePlay(audio.start);setTimeout(()=>hideTargetsAndStartPlay(),600);}},1000);}
 function playCount(n){const a=audio.counts[n];if(a)safePlay(a);}
 function hideTargetsAndStartPlay(){document.querySelectorAll('.letter-box.target').forEach(t=>t.classList.add('letter-hidden'));startPlayCountdown(30);}
 function startPlayCountdown(seconds){remaining=seconds;gameActive=true;btnPlay.style.display='none';btnReplay.style.display='inline-block';playTimer=setInterval(()=>{if(remaining>0){if(remaining<=10){timerBox.classList.add('shake');timerBox.textContent='⏰ '+remaining;playCount(remaining);}else{timerBox.classList.remove('shake');timerBox.textContent='Đang chơi...';}remaining--;}else{clearInterval(playTimer);gameActive=false;timerBox.classList.remove('shake');timerBox.textContent='Hết giờ!';safePlay(audio.timeup);document.querySelectorAll('.letter-box.target').forEach(t=>applyFlash(t,'flash-red',700));}},1000);}
@@ -183,5 +183,6 @@ attachPronHandlers();
 </script>
 </body>
 </html>
+
 
 
