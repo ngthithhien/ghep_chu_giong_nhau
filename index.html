@@ -5,13 +5,32 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <title>Ghép chữ giống nhau — Chuẩn</title>
 <style>
+/* ====== NHÚNG FONT UTM AVO TỪ /fonts ======
+   Đặt file: ./fonts/UTM-Avo.ttf
+*/
+@font-face {
+  font-family: "UTM Avo";
+  src: url("./fonts/UTM-Avo.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ========= ÁP DỤNG FONT CHUNG ========= */
 :root{
   --bg1:#667eea; --bg2:#764ba2;
   --accent1:#f093fb; --accent2:#f5576c;
   --good1:#84fab0; --good2:#8fd3f4;
   --green:#22c55e; --red:#ff4d4f;
 }
-html,body{height:100%;margin:0;padding:0;font-family:"Comic Sans MS",cursive,system-ui,-apple-system,Segoe UI;background:linear-gradient(135deg,var(--bg1),var(--bg2));}
+
+html,body{
+  height:100%;
+  margin:0;
+  padding:0;
+  font-family:"UTM Avo", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+}
 body{overflow:hidden;display:flex;align-items:stretch;justify-content:center;user-select:none;}
 
 .game-container{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:3vh 2vw;box-sizing:border-box;}
@@ -59,6 +78,7 @@ body{overflow:hidden;display:flex;align-items:stretch;justify-content:center;use
   background:#fff;
   user-select:none;
   touch-action:none;
+  font-family: "UTM Avo", sans-serif !important;
 }
 
 .letter-box.target{background:linear-gradient(135deg,#ffecd2,#fcb69f);border:5px dashed #ff6b6b;}
@@ -79,6 +99,10 @@ body{overflow:hidden;display:flex;align-items:stretch;justify-content:center;use
 .play-button{background:linear-gradient(135deg,#11998e,#38ef7d)}
 .replay-button{background:linear-gradient(135deg,#4facfe,#00f2fe)}
 
+/* style nút fullscreen */
+.fullscreen-button{min-width:88px;padding:12px 14px;border-radius:12px;border:none;background:linear-gradient(135deg,#6c5ce7,#a78bfa);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,0.16);font-size:16px;display:flex;align-items:center;justify-content:center;}
+
+/* confetti */
 .confetti{position:fixed;width:10px;height:12px;z-index:2550;pointer-events:none;transform-origin:center;animation:confetti-fall 3200ms linear forwards;}
 @keyframes confetti-fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
 
@@ -113,6 +137,7 @@ body{overflow:hidden;display:flex;align-items:stretch;justify-content:center;use
   <button id="endButton" class="game-button end-button">🏁 Kết thúc</button>
   <button id="playButton" class="game-button play-button">🎯 Chơi</button>
   <button id="replayButton" class="game-button replay-button" style="display:none">🔄 Chơi lại</button>
+  <button id="btnFullscreen" class="fullscreen-button" aria-label="Toàn màn hình">⤢ Toàn màn hình</button>
 </div>
 
 <script>
@@ -143,6 +168,7 @@ function safePlay(a){try{if(!a)return;a.currentTime=0;a.play().catch(()=>{});}ca
 function applyFlash(el,cls,ms=850){if(!el)return;el.classList.remove('flash-green','flash-red');void el.offsetWidth;el.classList.add(cls);setTimeout(()=>el.classList.remove(cls),ms);}
 function createConfetti(){const colors=['#ff4d4d','#ffcc00','#00cc66','#00bfff','#ff66cc','#ff8c42'];for(let i=0;i<60;i++){setTimeout(()=>{const c=document.createElement('div');c.className='confetti';c.style.left=(6+Math.random()*88)+'%';c.style.top='-10%';c.style.background=colors[Math.floor(Math.random()*colors.length)];c.style.width=(6+Math.random()*10)+'px';c.style.height=(8+Math.random()*12)+'px';c.style.transform='rotate('+Math.random()*360+'deg)';document.body.appendChild(c);setTimeout(()=>c.remove(),3600);},i*12);}}
 
+/* ---------- shuffle & place ---------- */
 function shuffleArray(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function placeRandomTargets(){const letters=['a','ă','â'];const shuffledTargets=shuffleArray(letters);const targets=targetRow.querySelectorAll('.letter-box.target');targets.forEach((t,idx)=>{t.dataset.letter=shuffledTargets[idx];t.querySelector('.letter-content').textContent=shuffledTargets[idx];t.classList.remove('letter-hidden','revealed');});const drags=draggableRow.querySelectorAll('.letter-box.draggable');const shuffledDrags=shuffleArray(letters);drags.forEach((d,idx)=>{d.dataset.letter=shuffledDrags[idx];d.textContent=shuffledDrags[idx];d.style.visibility='visible';d.draggable=true;d.style.transform='';});correctCount=0;}
 
@@ -180,9 +206,58 @@ btnEnd.addEventListener('click',()=>{gameActive=false;clearTimers();timerBox.cla
 btnReplay.addEventListener('click',()=>startInitialCountdown());
 
 attachPronHandlers();
+
+/* ---------- Fullscreen button behavior ---------- */
+const btnFs = document.getElementById('btnFullscreen');
+
+function isFullscreenSupported() {
+  return document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled;
+}
+
+function enterFullscreen(el){
+  if(el.requestFullscreen) return el.requestFullscreen();
+  if(el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+  if(el.mozRequestFullScreen) return el.mozRequestFullScreen();
+  if(el.msRequestFullscreen) return el.msRequestFullscreen();
+}
+
+function exitFullscreen(){
+  if(document.exitFullscreen) return document.exitFullscreen();
+  if(document.webkitExitFullscreen) return document.webkitExitFullscreen();
+  if(document.mozCancelFullScreen) return document.mozCancelFullScreen();
+  if(document.msExitFullscreen) return document.msExitFullscreen();
+}
+
+function toggleFullscreen(){
+  try{
+    if(!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement){
+      enterFullscreen(document.documentElement);
+      btnFs.textContent = '⤡ Thoát toàn màn hình';
+    } else {
+      exitFullscreen();
+      btnFs.textContent = '⤢ Toàn màn hình';
+    }
+  }catch(e){
+    console.log('Fullscreen error', e);
+  }
+}
+
+/* support click + touchstart for faster mobile response */
+if (btnFs) {
+  btnFs.addEventListener('click', toggleFullscreen);
+  btnFs.addEventListener('touchstart', (e)=>{ e.preventDefault(); toggleFullscreen(); });
+}
+
+/* when user exits fullscreen via browser controls, update button label */
+document.addEventListener('fullscreenchange', ()=>{ if(!document.fullscreenElement && btnFs) btnFs.textContent = '⤢ Toàn màn hình'; });
+document.addEventListener('webkitfullscreenchange', ()=>{ if(!document.webkitFullscreenElement && btnFs) btnFs.textContent = '⤢ Toàn màn hình'; });
+document.addEventListener('mozfullscreenchange', ()=>{ if(!document.mozFullScreenElement && btnFs) btnFs.textContent = '⤢ Toàn màn hình'; });
+document.addEventListener('msfullscreenchange', ()=>{ if(!document.msFullscreenElement && btnFs) btnFs.textContent = '⤢ Toàn màn hình'; });
+
+/* hide fullscreen button if API not supported */
+if (btnFs && !isFullscreenSupported()) {
+  btnFs.style.display = 'none';
+}
 </script>
 </body>
 </html>
-
-
-
