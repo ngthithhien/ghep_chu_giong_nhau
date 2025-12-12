@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <title>Ghép chữ giống nhau — Chuẩn</title>
 <style>
-/* ====== NHÚNG FONT UTM AVO TỪ /fonts ======
-   Đặt file: ./fonts/UTM-Avo.ttf
-*/
 @font-face {
   font-family: "UTM Avo";
   src: url("./fonts/UTM-Avo.ttf") format("truetype");
@@ -16,7 +13,6 @@
   font-display: swap;
 }
 
-/* ========= ÁP DỤNG FONT CHUNG ========= */
 :root{
   --bg1:#667eea; --bg2:#764ba2;
   --accent1:#f093fb; --accent2:#f5576c;
@@ -25,16 +21,12 @@
 }
 
 html,body{
-  height:100%;
-  margin:0;
-  padding:0;
-  font-family:"UTM Avo", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  height:100%;margin:0;padding:0;font-family:"UTM Avo",sans-serif;
   background:linear-gradient(135deg,var(--bg1),var(--bg2));
 }
 body{overflow:hidden;display:flex;align-items:stretch;justify-content:center;user-select:none;}
 
 .game-container{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:3vh 2vw;box-sizing:border-box;}
-
 .panel{
   width:100%;height:100%;background:#fff;border-radius:12px;box-shadow:0 28px 70px rgba(0,0,0,0.22);
   display:flex;flex-direction:column;align-items:center;padding:22px;position:relative;overflow:hidden;box-sizing:border-box;
@@ -47,70 +39,40 @@ body{overflow:hidden;display:flex;align-items:stretch;justify-content:center;use
   background:linear-gradient(135deg,var(--accent1),var(--accent2));box-shadow:0 8px 20px rgba(0,0,0,0.12);text-align:center;
   font-size:clamp(16px,3.2vw,28px);
 }
-.timer-box.shake{animation:shake .45s infinite}
-@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}100%{transform:translateX(0)}}
 
 .game-area{flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:8px 4vw;box-sizing:border-box;}
 
-.letter-row{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:20px;
-  flex-wrap:wrap;
-}
-
+.letter-row{width:100%;display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap;}
 .letter-box{
-  width:calc((100% - 60px)/3);
-  max-width:260px;
-  min-width:120px;
-  height:32vh;
-  border-radius:16px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  font-size:10vh;
-  color:#222;
-  box-shadow:0 12px 40px rgba(0,0,0,0.12);
-  transition:transform .22s,box-shadow .22s;
-  background:#fff;
-  user-select:none;
-  touch-action:none;
-  font-family: "UTM Avo", sans-serif !important;
+  width:calc((100% - 60px)/3);max-width:260px;min-width:120px;height:32vh;
+  border-radius:16px;display:flex;align-items:center;justify-content:center;
+  font-weight:400;font-size:calc(12vh * 2.1);color:#222;background:#fff;
+  box-shadow:0 12px 40px rgba(0,0,0,0.12);transition:transform .22s,box-shadow .22s;
+  user-select:none;touch-action:none;
 }
 
 .letter-box.target{background:linear-gradient(135deg,#ffecd2,#fcb69f);border:5px dashed #ff6b6b;}
 .letter-box.target.letter-hidden .letter-content{visibility:hidden;}
-.letter-box.target.revealed{background:linear-gradient(135deg,var(--good1),var(--good2));box-shadow:0 30px 90px rgba(0,0,0,0.14);transform:scale(1.02);}
+.letter-box.target.revealed{background:linear-gradient(135deg,var(--good1),var(--good2));box-shadow:0 20px 60px rgba(0,0,0,0.08);transform:scale(1.02);}
 
 .letter-box.draggable{background:linear-gradient(135deg,#a8edea,#fed6e3);cursor:grab;}
-.letter-box.dragging,.letter-box.touch-active{transform:scale(1.03);z-index:2000;box-shadow:0 26px 80px rgba(0,0,0,0.18);}
-
-.flash-green{animation:flashGreen 850ms both}
-@keyframes flashGreen{0%{box-shadow:0 0 0 0 rgba(34,197,94,0);transform:scale(1);}20%{box-shadow:0 20px 50px 8px rgba(34,197,94,0.2);transform:scale(1.03);}100%{box-shadow:0 12px 30px 0 rgba(34,197,94,0.06);transform:scale(1.02);}}
-.flash-red{animation:flashRed 700ms both}
-@keyframes flashRed{0%{box-shadow:0 0 0 0 rgba(255,77,79,0);transform:scale(1);}20%{box-shadow:0 20px 50px 8px rgba(255,77,79,0.2);transform:scale(0.98);}100%{box-shadow:0 12px 30px 0 rgba(255,77,79,0.06);transform:scale(1);}}
+.letter-box.dragging{transform:scale(1.03);z-index:2000;box-shadow:0 26px 80px rgba(0,0,0,0.18);}
 
 .button-col{position:fixed;right:16px;top:16px;display:flex;flex-direction:column;gap:12px;align-items:center;z-index:2600;}
 .game-button{min-width:88px;padding:12px 14px;border-radius:12px;border:none;color:#fff;font-weight:800;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,0.16);font-size:16px;display:flex;align-items:center;justify-content:center;}
-.end-button{background:linear-gradient(135deg,#ee0979,#ff6a00)}
+.end-button{background:linear-gradient(135deg,#b92b27,#1565C0)}
 .play-button{background:linear-gradient(135deg,#11998e,#38ef7d)}
 .replay-button{background:linear-gradient(135deg,#4facfe,#00f2fe)}
 
-/* style nút fullscreen */
 .fullscreen-button{min-width:88px;padding:12px 14px;border-radius:12px;border:none;background:linear-gradient(135deg,#6c5ce7,#a78bfa);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,0.16);font-size:16px;display:flex;align-items:center;justify-content:center;}
 
-/* confetti */
-.confetti{position:fixed;width:10px;height:12px;z-index:2550;pointer-events:none;transform-origin:center;animation:confetti-fall 3200ms linear forwards;}
-@keyframes confetti-fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
-
-@media (max-width:900px){.letter-box{height:28vh;font-size:9vh}}
-@media (max-width:600px){.letter-box{height:24vh;font-size:8.5vh;} .game-button{min-width:72px;padding:10px 12px;font-size:15px} .button-col{right:8px;top:8px} .panel{padding:14px}}
+#fireworksCanvas{
+  position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:3000;
+}
 </style>
 </head>
 <body>
+<canvas id="fireworksCanvas"></canvas>
 <div class="game-container">
   <div class="panel">
     <div class="top-area">
@@ -119,145 +81,108 @@ body{overflow:hidden;display:flex;align-items:stretch;justify-content:center;use
     </div>
 
     <div class="game-area" role="main">
-      <div class="letter-row" id="targetRow" aria-label="Ô mục tiêu">
-        <div class="letter-box target" data-index="0" data-letter="a" tabindex="0"><span class="letter-content">a</span></div>
-        <div class="letter-box target" data-index="1" data-letter="ă" tabindex="0"><span class="letter-content">ă</span></div>
-        <div class="letter-box target" data-index="2" data-letter="â" tabindex="0"><span class="letter-content">â</span></div>
+      <div class="letter-row" id="targetRow">
+        <div class="letter-box target" data-index="0" data-letter="b"><span class="letter-content">b</span></div>
+        <div class="letter-box target" data-index="1" data-letter="d"><span class="letter-content">d</span></div>
+        <div class="letter-box target" data-index="2" data-letter="đ"><span class="letter-content">đ</span></div>
       </div>
-      <div class="letter-row" id="draggableRow" aria-label="Ô chữ kéo">
-        <div class="letter-box draggable" draggable="true" data-letter="a" tabindex="0">a</div>
-        <div class="letter-box draggable" draggable="true" data-letter="ă" tabindex="0">ă</div>
-        <div class="letter-box draggable" draggable="true" data-letter="â" tabindex="0">â</div>
+      <div class="letter-row" id="draggableRow">
+        <div class="letter-box draggable" draggable="true" data-letter="b">b</div>
+        <div class="letter-box draggable" draggable="true" data-letter="d">d</div>
+        <div class="letter-box draggable" draggable="true" data-letter="đ">đ</div>
       </div>
     </div>
   </div>
 </div>
 
 <div class="button-col">
-  <button id="endButton" class="game-button end-button">🏁 Kết thúc</button>
+  <button id="endButton" class="game-button end-button">⛔ Dừng lại</button>
   <button id="playButton" class="game-button play-button">🎯 Chơi</button>
   <button id="replayButton" class="game-button replay-button" style="display:none">🔄 Chơi lại</button>
-  <button id="btnFullscreen" class="fullscreen-button" aria-label="Toàn màn hình">⤢ Toàn màn hình</button>
+  <button id="btnFullscreen" class="fullscreen-button">⤢ Toàn màn hình</button>
 </div>
 
 <script>
-/* ---------- sound paths ---------- */
-const soundPaths = {
-  counts: {10:'./sounds/count10.mp3',9:'./sounds/count9.mp3',8:'./sounds/count8.mp3',7:'./sounds/count7.mp3',6:'./sounds/count6.mp3',5:'./sounds/count5.mp3',4:'./sounds/count4.mp3',3:'./sounds/count3.mp3',2:'./sounds/count2.mp3',1:'./sounds/count1.mp3'},
-  start:'./sounds/start.mp3',correct:'./sounds/correct.mp3',wrong:'./sounds/wrong.mp3',win:'./sounds/win.mp3',timeup:'./sounds/timeup.mp3',
-  pronCandidates:{'a':['./sounds/a.mp3'],'ă':['./sounds/ă.mp3','./sounds/abreve.mp3'],'â':['./sounds/â.mp3','./sounds/acirc.mp3']}
-};
+/* Audio */
+const audio={count5:new Audio('./sounds/5.mp3'),count4:new Audio('./sounds/4.mp3'),count3:new Audio('./sounds/3.mp3'),count2:new Audio('./sounds/2.mp3'),count1:new Audio('./sounds/1.mp3'),start:new Audio('./sounds/start.mp3'),correct:new Audio('./sounds/correct.mp3'),wrong:new Audio('./sounds/wrong.mp3'),win:new Audio('./sounds/win.mp3'),timeup:new Audio('./sounds/timeup.mp3')};
+function safePlay(a){try{a.currentTime=0;a.play().catch(()=>{});}catch(e){} }
 
-/* ---------- create audio objects ---------- */
-const audio = { counts:{}, start:null, correct:null, wrong:null, win:null, timeup:null };
-for(let i=1;i<=10;i++) audio.counts[i] = new Audio(soundPaths.counts[i]);
-audio.start = new Audio(soundPaths.start); audio.correct=new Audio(soundPaths.correct);
-audio.wrong = new Audio(soundPaths.wrong); audio.win = new Audio(soundPaths.win); audio.timeup = new Audio(soundPaths.timeup);
+let gameActive=false,playTimer=null,remaining=0,correctCount=0,draggedElement=null;
+const timerBox=document.getElementById("timerBox");
+const btnPlay=document.getElementById("playButton");
+const btnReplay=document.getElementById("replayButton");
+const targetRow=document.getElementById("targetRow");
+const draggableRow=document.getElementById("draggableRow");
 
-/* ---------- state ---------- */
-let gameActive=false, initialTimer=null, playTimer=null, remaining=0, correctCount=0, draggedElement=null;
-const timerBox = document.getElementById('timerBox');
-const btnEnd = document.getElementById('endButton');
-const btnPlay = document.getElementById('playButton');
-const btnReplay = document.getElementById('replayButton');
-const targetRow = document.getElementById('targetRow');
-const draggableRow = document.getElementById('draggableRow');
+function shuffleArray(a){const arr=a.slice();for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
 
-/* ---------- helpers ---------- */
-function safePlay(a){try{if(!a)return;a.currentTime=0;a.play().catch(()=>{});}catch(e){}}
-function applyFlash(el,cls,ms=850){if(!el)return;el.classList.remove('flash-green','flash-red');void el.offsetWidth;el.classList.add(cls);setTimeout(()=>el.classList.remove(cls),ms);}
-function createConfetti(){const colors=['#ff4d4d','#ffcc00','#00cc66','#00bfff','#ff66cc','#ff8c42'];for(let i=0;i<60;i++){setTimeout(()=>{const c=document.createElement('div');c.className='confetti';c.style.left=(6+Math.random()*88)+'%';c.style.top='-10%';c.style.background=colors[Math.floor(Math.random()*colors.length)];c.style.width=(6+Math.random()*10)+'px';c.style.height=(8+Math.random()*12)+'px';c.style.transform='rotate('+Math.random()*360+'deg)';document.body.appendChild(c);setTimeout(()=>c.remove(),3600);},i*12);}}
-
-/* ---------- shuffle & place ---------- */
-function shuffleArray(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function placeRandomTargets(){const letters=['a','ă','â'];const shuffledTargets=shuffleArray(letters);const targets=targetRow.querySelectorAll('.letter-box.target');targets.forEach((t,idx)=>{t.dataset.letter=shuffledTargets[idx];t.querySelector('.letter-content').textContent=shuffledTargets[idx];t.classList.remove('letter-hidden','revealed');});const drags=draggableRow.querySelectorAll('.letter-box.draggable');const shuffledDrags=shuffleArray(letters);drags.forEach((d,idx)=>{d.dataset.letter=shuffledDrags[idx];d.textContent=shuffledDrags[idx];d.style.visibility='visible';d.draggable=true;d.style.transform='';});correctCount=0;}
-
-/* ---------- countdown & play timer ---------- */
-function startInitialCountdown(){clearTimers();placeRandomTargets();let count=5;timerBox.classList.remove('shake');timerBox.textContent=count;playCount(count);initialTimer=setInterval(()=>{count--;if(count>=1){timerBox.textContent=count;playCount(count);}else{clearInterval(initialTimer);timerBox.textContent='Bắt đầu!';safePlay(audio.start);setTimeout(()=>hideTargetsAndStartPlay(),600);}},1000);}
-function playCount(n){const a=audio.counts[n];if(a)safePlay(a);}
-function hideTargetsAndStartPlay(){document.querySelectorAll('.letter-box.target').forEach(t=>t.classList.add('letter-hidden'));startPlayCountdown(30);}
-function startPlayCountdown(seconds){remaining=seconds;gameActive=true;btnPlay.style.display='none';btnReplay.style.display='inline-block';playTimer=setInterval(()=>{if(remaining>0){if(remaining<=10){timerBox.classList.add('shake');timerBox.textContent='⏰ '+remaining;playCount(remaining);}else{timerBox.classList.remove('shake');timerBox.textContent='Đang chơi...';}remaining--;}else{clearInterval(playTimer);gameActive=false;timerBox.classList.remove('shake');timerBox.textContent='Hết giờ!';safePlay(audio.timeup);document.querySelectorAll('.letter-box.target').forEach(t=>applyFlash(t,'flash-red',700));}},1000);}
-function clearTimers(){if(initialTimer){clearInterval(initialTimer);initialTimer=null;}if(playTimer){clearInterval(playTimer);playTimer=null;}}
-
-/* ---------- drag & drop ---------- */
-draggableRow.addEventListener('dragstart',e=>{if(!gameActive){e.preventDefault();return;}const el=e.target.closest('.letter-box.draggable');if(!el)return;draggedElement=el;el.classList.add('dragging');try{e.dataTransfer.setData('text/plain',el.dataset.letter);}catch(err){}});
-draggableRow.addEventListener('dragend',()=>{if(draggedElement)draggedElement.classList.remove('dragging');draggedElement=null;});
-targetRow.addEventListener('dragover',e=>e.preventDefault());
-targetRow.addEventListener('drop',e=>{e.preventDefault();if(!gameActive)return;const tgt=e.target.closest('.letter-box.target');if(!tgt)return;const letter=(draggedElement&&draggedElement.dataset.letter)||(e.dataTransfer&&e.dataTransfer.getData('text/plain'));handleDrop(letter,draggedElement,tgt);});
-
-/* ---------- touch ---------- */
-let touchEl=null, tsx=0, tsy=0, isTouch=false;
-draggableRow.addEventListener('touchstart',e=>{if(!gameActive)return;const t=e.touches[0];const el=e.target.closest('.letter-box.draggable');if(!el)return;touchEl=el;tsx=t.clientX;tsy=t.clientY;el.classList.add('touch-active');});
-document.addEventListener('touchmove',e=>{if(!touchEl||!gameActive)return;e.preventDefault();isTouch=true;const t=e.touches[0];const dx=t.clientX-tsx;const dy=t.clientY-tsy;touchEl.style.transform=`translate(${dx}px,${dy}px) scale(1.02)`;touchEl.style.zIndex='9999';});
-document.addEventListener('touchend',e=>{if(!touchEl)return;touchEl.classList.remove('touch-active');touchEl.style.transform='';touchEl.style.zIndex='';if(isTouch){const ch=e.changedTouches[0];const under=document.elementFromPoint(ch.clientX,ch.clientY);const tgt=under?under.closest('.letter-box.target'):null;const letter=touchEl.dataset.letter;handleDrop(letter,touchEl,tgt);}touchEl=null;isTouch=false;});
-
-/* ---------- drop handling ---------- */
-function handleDrop(letter,dragEl,targetEl){if(!targetEl||targetEl.classList.contains('revealed')){if(dragEl)animateReturn(dragEl);return;}const tgtLetter=targetEl.dataset.letter;if(letter===tgtLetter){targetEl.classList.remove('letter-hidden');targetEl.classList.add('revealed');if(dragEl){dragEl.style.visibility='hidden';dragEl.draggable=false;}safePlay(audio.correct);applyFlash(targetEl,'flash-green',850);playPronunciation(tgtLetter);correctCount++;const total=document.querySelectorAll('.letter-box.target').length;if(correctCount>=total){clearTimers();gameActive=false;timerBox.classList.remove('shake');timerBox.textContent='🎉 Giỏi lắm!';safePlay(audio.win);setTimeout(()=>createConfetti(),300);}}else{safePlay(audio.wrong);applyFlash(targetEl,'flash-red',700);if(dragEl)animateReturn(dragEl);}}
-function animateReturn(el){if(!el)return;try{el.animate([{transform:'translateY(-8px)'},{transform:'translateY(0)'}],{duration:180});}catch(e){}}
-
-/* ---------- pronunciation ---------- */
-function tryPlayPaths(paths){if(!paths||paths.length===0)return;let idx=0;function attempt(){if(idx>=paths.length)return;const p=new Audio(paths[idx]);idx++;p.play().catch(()=>attempt());}attempt();}
-function playPronunciation(letter){const map=soundPaths.pronCandidates;if(map&&map[letter])tryPlayPaths(map[letter]);else if(map&&map['a'])tryPlayPaths(map['a']);}
-function attachPronHandlers(){document.querySelectorAll('.letter-box').forEach(el=>{el.addEventListener('click',()=>{const letter=el.dataset.letter||el.textContent.trim();playPronunciation(letter);});el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();const letter=el.dataset.letter||el.textContent.trim();playPronunciation(letter);}});});}
-
-/* ---------- buttons ---------- */
-btnPlay.addEventListener('click',()=>startInitialCountdown());
-btnEnd.addEventListener('click',()=>{gameActive=false;clearTimers();timerBox.classList.remove('shake');timerBox.textContent='Kết thúc!';});
-btnReplay.addEventListener('click',()=>startInitialCountdown());
-
-attachPronHandlers();
-
-/* ---------- Fullscreen button behavior ---------- */
-const btnFs = document.getElementById('btnFullscreen');
-
-function isFullscreenSupported() {
-  return document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled;
+function placeRandomTargets(){
+  const letters=['b','d','đ'];
+  const t=shuffleArray(letters);const trg=document.querySelectorAll('.letter-box.target');
+  trg.forEach((el,i)=>{el.dataset.letter=t[i];el.querySelector('.letter-content').textContent=t[i];el.classList.remove('letter-hidden','revealed');});
+  const d=shuffleArray(letters);const dr=document.querySelectorAll('.letter-box.draggable');
+  dr.forEach((el,i)=>{el.dataset.letter=d[i];el.textContent=d[i];el.style.visibility='visible';el.draggable=true;});
+  correctCount=0;
 }
 
-function enterFullscreen(el){
-  if(el.requestFullscreen) return el.requestFullscreen();
-  if(el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
-  if(el.mozRequestFullScreen) return el.mozRequestFullScreen();
-  if(el.msRequestFullscreen) return el.msRequestFullscreen();
-}
-
-function exitFullscreen(){
-  if(document.exitFullscreen) return document.exitFullscreen();
-  if(document.webkitExitFullscreen) return document.webkitExitFullscreen();
-  if(document.mozCancelFullScreen) return document.mozCancelFullScreen();
-  if(document.msExitFullscreen) return document.msExitFullscreen();
-}
-
-function toggleFullscreen(){
-  try{
-    if(!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement){
-      enterFullscreen(document.documentElement);
-      btnFs.textContent = '⤡ Thoát toàn màn hình';
-    } else {
-      exitFullscreen();
-      btnFs.textContent = '⤢ Toàn màn hình';
+function startInitialCountdown(){
+  if(gameActive)return;
+  clearInterval(playTimer);
+  placeRandomTargets();
+  btnPlay.style.display='none';btnReplay.style.display='none';
+  const seq=[5,4,3,2,1];let idx=0;
+  function next(){
+    if(idx<seq.length){timerBox.textContent=seq[idx];safePlay(audio['count'+seq[idx]]);idx++;setTimeout(next,1000);}else{
+      timerBox.textContent='Bắt đầu!';safePlay(audio.start);
+      setTimeout(()=>{
+        document.querySelectorAll('.target').forEach(t=>t.classList.add('letter-hidden'));
+        startPlayCountdown(3000);
+      },900);
     }
-  }catch(e){
-    console.log('Fullscreen error', e);
   }
+  next();
 }
 
-/* support click + touchstart for faster mobile response */
-if (btnFs) {
-  btnFs.addEventListener('click', toggleFullscreen);
-  btnFs.addEventListener('touchstart', (e)=>{ e.preventDefault(); toggleFullscreen(); });
+function startPlayCountdown(s){remaining=s;gameActive=true;timerBox.textContent='Đang chơi...';playTimer=setInterval(()=>{if(remaining>0)remaining--;else endGame('Hết giờ!');},1000);}  
+
+/* Pháo hoa nhẹ nhàng */
+const canvas=document.getElementById('fireworksCanvas');const ctx=canvas.getContext('2d');
+canvas.width=innerWidth;canvas.height=innerHeight;
+let fw=[];
+function Firework(x,y){this.x=x;this.y=y;this.r=2;this.a=0.25;this.dx=(Math.random()-0.5)*2;this.dy=(Math.random()-0.5)*2;}
+Firework.prototype.update=function(){this.x+=this.dx;this.y+=this.dy;this.r+=0.5;this.a-=0.01;}
+Firework.prototype.draw=function(){ctx.globalAlpha=this.a;ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle='yellow';ctx.fill();ctx.globalAlpha=1;}
+function spawnFireworks(){for(let i=0;i<18;i++){fw.push(new Firework(innerWidth/2,innerHeight/2));}}
+function loopFw(){ctx.clearRect(0,0,canvas.width,canvas.height);fw.forEach((f,i)=>{f.update();f.draw();if(f.a<=0)fw.splice(i,1);});requestAnimationFrame(loopFw);}loopFw();
+
+/* Drag */
+draggableRow.addEventListener('dragstart',e=>{if(!gameActive){e.preventDefault();return;}const el=e.target.closest('.draggable');if(!el)return;draggedElement=el;el.classList.add('dragging');});
+draggableRow.addEventListener('dragend',()=>{if(draggedElement)draggedElement.classList.remove('dragging');draggedElement=null;});
+
+targetRow.addEventListener('dragover',e=>e.preventDefault());
+targetRow.addEventListener('drop',e=>{e.preventDefault();if(!gameActive)return;const t=e.target.closest('.target');if(!t)return;const l=draggedElement.dataset.letter;handleDrop(l,draggedElement,t);});
+
+function handleDrop(l,dragEl,targetEl){
+  if(targetEl.classList.contains('revealed'))return;
+  if(l===targetEl.dataset.letter){
+    targetEl.classList.remove('letter-hidden');targetEl.classList.add('revealed');
+    dragEl.style.visibility='hidden';dragEl.draggable=false;
+    safePlay(audio.correct);
+    spawnFireworks();
+    correctCount++;
+    if(correctCount>=3) endGame('🎉 Xuất sắc!');
+  } else safePlay(audio.wrong);
 }
 
-/* when user exits fullscreen via browser controls, update button label */
-document.addEventListener('fullscreenchange', ()=>{ if(!document.fullscreenElement && btnFs) btnFs.textContent = '⤢ Toàn màn hình'; });
-document.addEventListener('webkitfullscreenchange', ()=>{ if(!document.webkitFullscreenElement && btnFs) btnFs.textContent = '⤢ Toàn màn hình'; });
-document.addEventListener('mozfullscreenchange', ()=>{ if(!document.mozFullScreenElement && btnFs) btnFs.textContent = '⤢ Toàn màn hình'; });
-document.addEventListener('msfullscreenchange', ()=>{ if(!document.msFullscreenElement && btnFs) btnFs.textContent = '⤢ Toàn màn hình'; });
+function endGame(msg){gameActive=false;clearInterval(playTimer);timerBox.textContent=msg;btnReplay.style.display='inline-block';btnPlay.style.display='none';}
 
-/* hide fullscreen button if API not supported */
-if (btnFs && !isFullscreenSupported()) {
-  btnFs.style.display = 'none';
-}
+document.getElementById('endButton').onclick=()=>{endGame('Đã dừng trò chơi');};
+btnPlay.onclick=()=>startInitialCountdown();btnReplay.onclick=()=>startInitialCountdown();
+
+/* FULLSCREEN */
+const fs=document.getElementById('btnFullscreen');
+fs.onclick=()=>{if(!document.fullscreenElement){document.documentElement.requestFullscreen();fs.textContent='⤡ Thoát toàn màn hình';}else{document.exitFullscreen();fs.textContent='⤢ Toàn màn hình';}};
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)fs.textContent='⤢ Toàn màn hình';});
 </script>
 </body>
 </html>
